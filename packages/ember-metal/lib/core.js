@@ -31,7 +31,7 @@ if ('undefined' === typeof Ember) {
 
 // Create core object. Make it act like an instance of Ember.Namespace so that
 // objects assigned to it are given a sane string representation.
-Ember = { isNamespace: true, toString: function() { return "Ember"; } };
+Ember = {};
 
 ROOT = typeof window === 'undefined' ? typeof global === 'undefined' ? this : global : window;
 
@@ -39,6 +39,13 @@ ROOT = typeof window === 'undefined' ? typeof global === 'undefined' ? this : gl
 ROOT.Ember = ROOT.Em = Ember;
 
 }
+
+// Make sure these are set whether Ember was already defined or not
+
+Ember.isNamespace = true;
+
+Ember.toString = function() { return "Ember"; };
+
 
 /**
   @static
@@ -168,17 +175,22 @@ Ember.K = function() { return this; };
 
 // Stub out the methods defined by the ember-debug package in case it's not loaded
 
-if ('undefined' === typeof ember_assert) {
-  ROOT.ember_assert = Ember.K;
+if ('undefined' === typeof Ember.assert) { Ember.assert = Ember.K; }
+if ('undefined' === typeof Ember.warn) { Ember.warn = Ember.K; }
+if ('undefined' === typeof Ember.deprecate) { Ember.deprecate = Ember.K; }
+if ('undefined' === typeof Ember.deprecateFunc) {
+  Ember.deprecateFunc = function(_, func) { return func; };
 }
 
+// These are deprecated but still supported
+
+if ('undefined' === typeof ember_assert) { ROOT.ember_assert = Ember.K; }
 if ('undefined' === typeof ember_warn) { ROOT.ember_warn = Ember.K; }
-
 if ('undefined' === typeof ember_deprecate) { ROOT.ember_deprecate = Ember.K; }
-
 if ('undefined' === typeof ember_deprecateFunc) {
   ROOT.ember_deprecateFunc = function(_, func) { return func; };
 }
+
 
 // ..........................................................
 // LOGGER

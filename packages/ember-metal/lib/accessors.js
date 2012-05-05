@@ -3,7 +3,6 @@
 // Copyright: ©2011 Strobe Inc. and contributors.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
-/*globals ember_assert */
 
 require('ember-metal/core');
 require('ember-metal/platform');
@@ -64,7 +63,7 @@ if (!USE_ACCESSORS) {
       obj = Ember;
     }
 
-    ember_assert("You need to provide an object and key to `get`.", !!obj && keyName);
+    Ember.assert("You need to provide an object and key to `get`.", !!obj && keyName);
 
     if (!obj) return undefined;
     var desc = meta(obj, false).descs[keyName];
@@ -74,7 +73,7 @@ if (!USE_ACCESSORS) {
 
   /** @private */
   set = function(obj, keyName, value) {
-    ember_assert("You need to provide an object and key to `set`.", !!obj && keyName !== undefined);
+    Ember.assert("You need to provide an object and key to `set`.", !!obj && keyName !== undefined);
     var desc = meta(obj, false).descs[keyName];
     if (desc) desc.set(obj, keyName, value);
     else o_set(obj, keyName, value);
@@ -150,7 +149,7 @@ Ember.set = set;
 
 /** @private */
 function normalizePath(path) {
-  ember_assert('must pass non-empty string to normalizePath()', path && path!=='');
+  Ember.assert('must pass non-empty string to normalizePath()', path && path!=='');
 
   if (path==='*') return path; //special case...
   var first = path.charAt(0);
@@ -296,7 +295,7 @@ Ember.getPath = function(root, path, _checkGlobal) {
   hasThis  = HAS_THIS.test(path);
 
   if (!root || hasThis || hasStar) {
-    ember_deprecate("Fetching globals with Ember.getPath is deprecated (root: "+root+", path: "+path+")", !root || root === ROOT || !IS_GLOBAL.test(path));
+    Ember.deprecate("Fetching globals with Ember.getPath is deprecated (root: "+root+", path: "+path+")", !root || root === ROOT || !IS_GLOBAL.test(path));
 
     var tuple = normalizeTuple(root, path);
     root = tuple[0];
@@ -307,7 +306,7 @@ Ember.getPath = function(root, path, _checkGlobal) {
   ret = getPath(root, path);
 
   if (ret === undefined && !pathOnly && !hasThis && root !== ROOT && IS_GLOBAL.test(path) && _checkGlobal !== false) {
-    ember_deprecate("Fetching globals with Ember.getPath is deprecated (root: "+root+", path: "+path+")");
+    Ember.deprecate("Fetching globals with Ember.getPath is deprecated (root: "+root+", path: "+path+")");
     return Ember.getPath(ROOT, path);
   } else {
     return ret;
@@ -325,8 +324,7 @@ Ember.setPath = function(root, path, value, tolerant) {
 
   path = normalizePath(path);
   if (path.indexOf('*')>0) {
-    ember_deprecate("Setting globals with Ember.setPath is deprecated (path: "+path+")", !root || root === ROOT || !IS_GLOBAL.test(path));
-
+    Ember.deprecate("Setting globals with Ember.setPath is deprecated (path: "+path+")", !root || root === ROOT || !IS_GLOBAL.test(path));
     var tuple = normalizeTuple(root, path);
     root = tuple[0];
     path = tuple[1];
@@ -340,7 +338,7 @@ Ember.setPath = function(root, path, value, tolerant) {
       // Remove the `false` when we're done with this deprecation
       root = Ember.getPath(root, path, false);
       if (!root && IS_GLOBAL.test(path)) {
-        ember_deprecate("Setting globals with Ember.setPath is deprecated (path: "+path+")");
+        Ember.deprecate("Setting globals with Ember.setPath is deprecated (path: "+path+")");
         root = Ember.getPath(ROOT, path);
       }
     }
