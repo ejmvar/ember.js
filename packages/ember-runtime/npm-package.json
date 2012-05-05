@@ -1,12 +1,12 @@
 {
-  "name": "ember-runtime",
+  "name": "ember-runtime-node",
   "summary": "Ember Runtime",
   "description": "The base Ember runtime. Essential for all Ember apps.",
   "homepage": "http://emberjs.com",
   "author": "Charles Jolley",
-  "version": "0.9.7-1",
+  "version": "0.9.7-1-1",
   "main": "./index.js",
   "dependencies": {
-    "ember-metal": "0.9.7-1"
+    "ember-metal-node": "0.9.7-1-1"
   }
 }
