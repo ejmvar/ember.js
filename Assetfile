@@ -123,27 +123,6 @@ input "packages" do
   end
 end
 
-# npm build
-input "dist/modules" do
-  module_paths = distros[:stateful].map{|m| "#{m}.js" }
-  
-  match "{#{module_paths.join(',')}}" do
-    concat do |filename|
-      File.join("npm/", filename.gsub('.js', ''), '/index.js')
-    end
-  end
-end
-
-input "packages" do
-  package_paths = distros[:stateful].map{|m| "#{m}/npm-package.json" }
-  
-  match "{#{package_paths.join(',')}}" do
-    concat do |filename|
-      File.join("npm/", filename.gsub('npm-package.json', ''), '/package.json')
-    end
-  end
-end
-
 distros.each do |name, modules|
   next if name == :stateful
   
@@ -170,6 +149,27 @@ distros.each do |name, modules|
     match "#{name}.min.js" do
       uglify{ "#{name}.min.js" }
       filter EmberLicenseFilter
+    end
+  end
+end
+
+# npm build
+input "dist/modules" do
+  module_paths = distros[:stateful].map{|m| "#{m}.js" }
+  
+  match "{#{module_paths.join(',')}}" do
+    concat do |filename|
+      File.join("npm/", filename.gsub('.js', ''), '/index.js')
+    end
+  end
+end
+
+input "packages" do
+  package_paths = distros[:stateful].map{|m| "#{m}/npm-package.json" }
+  
+  match "{#{package_paths.join(',')}}" do
+    concat do |filename|
+      File.join("npm/", filename.gsub('npm-package.json', ''), '/package.json')
     end
   end
 end

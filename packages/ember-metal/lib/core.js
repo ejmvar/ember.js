@@ -31,9 +31,9 @@ if ('undefined' === typeof Ember) {
 
 // Create core object. Make it act like an instance of Ember.Namespace so that
 // objects assigned to it are given a sane string representation.
-var Ember = { isNamespace: true, toString: function() { return "Ember"; } };
+Ember = { isNamespace: true, toString: function() { return "Ember"; } };
 
-ROOT = typeof window == 'undefined' ? typeof global == 'undefined' ? this : global : window;
+ROOT = typeof window === 'undefined' ? typeof global === 'undefined' ? this : global : window;
 
 // aliases needed to keep minifiers from removing the global context
 ROOT.Ember = ROOT.Em = Ember;

@@ -1,5 +1,5 @@
 /*global __fail__*/
-var ROOT = Ember.ROOT;
+var ROOT = typeof window == 'undefined' ? typeof global == 'undefined' ? this : global : window;//Ember.ROOT;
 /**
   Define an assertion that will throw an exception if the condition is not
   met.  Ember build tools will remove any calls to ember_assert() when
