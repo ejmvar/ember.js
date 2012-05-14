@@ -1,11 +1,47 @@
 /*global __fail__*/
-if ('undefined' === typeof Ember) {
-  Ember = {};
+var ROOT;
 
-  if ('undefined' !== typeof window) {
-    window.Em = window.Ember = Em = Ember;
-  }
-  
+if ('undefined' === typeof Ember) {
+/**
+  @namespace
+  @name Ember
+  @version 0.9.7.1
+
+  All Ember methods and functions are defined inside of this namespace.
+  You generally should not add new properties to this namespace as it may be
+  overwritten by future versions of Ember.
+
+  You can also use the shorthand "Em" instead of "Ember".
+
+  Ember-Runtime is a framework that provides core functions for
+  Ember including cross-platform functions, support for property
+  observing and objects. Its focus is on small size and performance. You can
+  use this in place of or along-side other cross-platform libraries such as
+  jQuery.
+
+  The core Runtime framework is based on the jQuery API with a number of
+  performance optimizations.
+*/
+
+// Create core object. Make it act like an instance of Ember.Namespace so that
+// objects assigned to it are given a sane string representation.
+Ember = {};
+
+ROOT = typeof window === 'undefined' ? typeof global === 'undefined' ? this : global : window;
+
+// aliases needed to keep minifiers from removing the global context
+ROOT.Ember = ROOT.Em = Ember;
+
+/**
+  @static
+  @type Object
+  @constant
+*/
+Ember.ROOT = ROOT;
+} else {
+  ROOT = Ember.ROOT;
+}
+
 /**
   Define an assertion that will throw an exception if the condition is not
   met.  Ember build tools will remove any calls to Ember.assert() when

@@ -38,6 +38,14 @@ ROOT = typeof window === 'undefined' ? typeof global === 'undefined' ? this : gl
 // aliases needed to keep minifiers from removing the global context
 ROOT.Ember = ROOT.Em = Ember;
 
+/**
+  @static
+  @type Object
+  @constant
+*/
+Ember.ROOT = ROOT;
+} else {
+  ROOT = Ember.ROOT;
 }
 
 // Make sure these are set whether Ember was already defined or not
@@ -45,14 +53,6 @@ ROOT.Ember = ROOT.Em = Ember;
 Ember.isNamespace = true;
 
 Ember.toString = function() { return "Ember"; };
-
-
-/**
-  @static
-  @type Object
-  @constant
-*/
-Ember.ROOT = ROOT;
 
 /**
   @static
