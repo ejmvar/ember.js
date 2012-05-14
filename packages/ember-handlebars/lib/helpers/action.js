@@ -6,7 +6,7 @@ var ActionHelper = EmberHandlebars.ActionHelper = {
   registeredActions: {}
 };
 
-ActionHelper.registerAction = function(actionName, eventName, target, view, context) {
+ActionHelper.registerAction = function(actionName, eventName, target, view, context, args) {
   var actionId = (++Ember.$.uuid).toString();
 
   ActionHelper.registeredActions[actionId] = {
@@ -19,7 +19,8 @@ ActionHelper.registerAction = function(actionName, eventName, target, view, cont
       if (target.isState && typeof target.send === 'function') {
         return target.send(actionName, event);
       } else {
-        return target[actionName].call(target, event);
+        args.push(event)
+        return target[actionName].apply(target, args);
       }
     }
   };
@@ -144,7 +145,9 @@ ActionHelper.registerAction = function(actionName, eventName, target, view, cont
   @param {String} actionName
   @param {Hash} options
 */
-EmberHandlebars.registerHelper('action', function(actionName, options) {
+EmberHandlebars.registerHelper('action', function(actionName) {
+  var args = Array.prototype.slice.call(arguments, 1, arguments.length);
+  var options = args.shift();
   var hash = options.hash || {},
       eventName = hash.on || "click",
       view = options.data.view,
@@ -162,6 +165,6 @@ EmberHandlebars.registerHelper('action', function(actionName, options) {
 
   context = options.contexts[0];
 
-  var actionId = ActionHelper.registerAction(actionName, eventName, target, view, context);
+  var actionId = ActionHelper.registerAction(actionName, eventName, target, view, context, args);
   return new EmberHandlebars.SafeString('data-ember-action="' + actionId + '"');
 });
